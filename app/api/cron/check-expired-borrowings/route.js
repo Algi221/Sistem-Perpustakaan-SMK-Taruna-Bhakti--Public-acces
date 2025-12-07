@@ -5,13 +5,8 @@ import pool from '@/lib/db';
  * Cron job endpoint untuk mengecek dan membatalkan peminjaman yang pending > 1 jam
  * Endpoint ini bisa dipanggil oleh cron job eksternal atau Vercel Cron
  * 
- * Untuk Vercel Cron, tambahkan ke vercel.json:
- * {
- *   "crons": [{
- *     "path": "/api/cron/check-expired-borrowings",
- *     "schedule": "*/5 * * * *"
- *   }]
- * }
+ * Untuk setup Vercel Cron, tambahkan konfigurasi ke vercel.json
+ * Lihat dokumentasi Vercel Cron untuk format schedule yang tepat
  */
 export async function GET(request) {
   try {
