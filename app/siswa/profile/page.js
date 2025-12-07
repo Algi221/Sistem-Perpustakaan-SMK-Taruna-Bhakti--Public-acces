@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import ProfileTabs from './components/ProfileTabs';
 import pool from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 async function getUserProfile(userId) {
   try {
     const [users] = await pool.execute(

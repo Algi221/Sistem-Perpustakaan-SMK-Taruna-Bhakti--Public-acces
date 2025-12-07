@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import pool from '@/lib/db';
 import BorrowingCard from './components/BorrowingCard';
 
+export const dynamic = 'force-dynamic';
+
 async function getBorrowings(userId) {
   try {
     const [borrowings] = await pool.execute(

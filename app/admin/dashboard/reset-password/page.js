@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import pool from '@/lib/db';
 import ResetPasswordRequestsClient from '@/components/admin/ResetPasswordRequestsClient';
 
+export const dynamic = 'force-dynamic';
+
 async function getResetPasswordRequests() {
   try {
     const [requests] = await pool.execute(

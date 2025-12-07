@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import pool from '@/lib/db';
 import Profil from '@/components/staff/Profil';
 
+export const dynamic = 'force-dynamic';
+
 async function getUserData(userId, role) {
   try {
     if (role === 'admin') {

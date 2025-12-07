@@ -10,6 +10,8 @@ import BookReviews from './components/BookReviews';
 import RecommendedBooks from './components/RecommendedBooks';
 import BackButton from './components/BackButton';
 
+export const dynamic = 'force-dynamic';
+
 async function getBook(id) {
   try {
     // Get book details

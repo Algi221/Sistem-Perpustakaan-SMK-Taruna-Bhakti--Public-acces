@@ -2,6 +2,8 @@ import { getSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import AdminSettings from '@/components/admin/AdminSettings';
 
+export const dynamic = 'force-dynamic';
+
 export default async function SettingsPage() {
   const session = await getSession();
 

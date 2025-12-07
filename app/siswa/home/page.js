@@ -4,6 +4,8 @@ import pool from '@/lib/db';
 import { enrichBooksWithAvailableStock } from '@/lib/bookUtils';
 import HomePageClient from './components/HomePageClient';
 
+export const dynamic = 'force-dynamic';
+
 async function getBorrowings(userId) {
   try {
     const [borrowings] = await pool.execute(

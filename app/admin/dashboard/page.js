@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import pool from '@/lib/db';
 import AdminDashboardClient from './dashboard-client';
 
+export const dynamic = 'force-dynamic';
+
 async function getStaff() {
   try {
     const [staff] = await pool.execute(

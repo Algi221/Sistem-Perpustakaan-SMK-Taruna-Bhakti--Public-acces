@@ -1,0 +1,7 @@
+Fix Vercel build errors: add dynamic export and Suspense boundary
+
+- Add 'export const dynamic = force-dynamic' to all pages using getSession()
+- Wrap useSearchParams() with Suspense boundary in /payment/success page
+- Fixes Dynamic server usage errors during static generation
+- Fixes missing Suspense boundary error for useSearchParams()
+

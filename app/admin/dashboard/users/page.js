@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation';
 import pool from '@/lib/db';
 import UserManagementClient from './user-management-client';
 
+export const dynamic = 'force-dynamic';
+
 async function getUsers() {
   try {
     const [users] = await pool.execute(
