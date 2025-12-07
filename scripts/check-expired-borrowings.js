@@ -5,8 +5,7 @@
  * Usage:
  * node scripts/check-expired-borrowings.js
  * 
- * Atau untuk production, setup cron job:
- * */5 * * * * curl -X GET http://your-domain.com/api/cron/check-expired-borrowings
+ * Atau untuk production, setup cron job dengan schedule yang sesuai
  */
 
 const http = require('http');
