@@ -1,37 +1,73 @@
-import Link from 'next/link';
+import pool from '@/lib/db';
+import LandingPageClient from '@/components/landing/LandingPageClient';
 
-export default function Home() {
+async function getBooks() {
+  try {
+    const [books] = await pool.execute(
+      'SELECT * FROM books ORDER BY created_at DESC LIMIT 50'
+    );
+    return books;
+  } catch (error) {
+    console.error('Error fetching books:', error);
+    return [];
+  }
+}
+
+async function getTrendingBooks() {
+  try {
+    // Buku trending berdasarkan jumlah peminjaman terbanyak
+    const [books] = await pool.execute(
+      `SELECT b.*, COUNT(br.id) as borrow_count
+       FROM books b
+       LEFT JOIN borrowings br ON b.id = br.book_id
+       GROUP BY b.id
+       ORDER BY borrow_count DESC, b.created_at DESC
+       LIMIT 10`
+    );
+    return books;
+  } catch (error) {
+    console.error('Error fetching trending books:', error);
+    return [];
+  }
+}
+
+async function getGenres() {
+  try {
+    const [genres] = await pool.execute(
+      'SELECT DISTINCT genre FROM books ORDER BY genre'
+    );
+    return genres.map(g => g.genre);
+  } catch (error) {
+    console.error('Error fetching genres:', error);
+    return [];
+  }
+}
+
+async function getBookStats() {
+  try {
+    const [totalBooks] = await pool.execute('SELECT COUNT(*) as total FROM books');
+    const [totalUsers] = await pool.execute('SELECT COUNT(*) as total FROM users');
+    return {
+      totalBooks: totalBooks[0]?.total || 0,
+      totalUsers: totalUsers[0]?.total || 0
+    };
+  } catch (error) {
+    return { totalBooks: 0, totalUsers: 0 };
+  }
+}
+
+export default async function Home() {
+  const books = await getBooks();
+  const trendingBooks = await getTrendingBooks();
+  const genres = await getGenres();
+  const stats = await getBookStats();
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
-      <main className="flex flex-col items-center justify-center gap-8 p-8 text-center">
-        <div className="space-y-4">
-          <h1 className="text-5xl font-bold text-gray-900 dark:text-white">
-            📚 Sistem Perpustakaan
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
-            SMK Taruna Bhakti
-          </p>
-        </div>
-        
-        <div className="flex flex-col gap-4 sm:flex-row">
-          <Link
-            href="/login"
-            className="rounded-lg bg-blue-600 px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-blue-700"
-          >
-            Masuk
-          </Link>
-          <Link
-            href="/register"
-            className="rounded-lg border-2 border-blue-600 px-8 py-3 text-lg font-semibold text-blue-600 transition-colors hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900/20"
-          >
-            Daftar
-          </Link>
-        </div>
-        
-        <p className="mt-8 text-sm text-gray-500 dark:text-gray-400">
-          Aplikasi sedang dalam pengembangan
-        </p>
-      </main>
-    </div>
+    <LandingPageClient 
+      books={books}
+      trendingBooks={trendingBooks}
+      genres={genres}
+      stats={stats}
+    />
   );
 }
