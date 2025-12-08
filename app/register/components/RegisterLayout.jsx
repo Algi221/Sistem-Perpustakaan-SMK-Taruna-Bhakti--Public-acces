@@ -92,12 +92,12 @@ export default function RegisterLayout({ children }) {
             <p className="text-sm text-blue-200 mb-4 text-center">Jurusan yang Tersedia</p>
             <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
               {[
-                { name: 'PPLG', image: '/img/pplg.png' },
-                { name: 'TJKT', image: '/img/tjkt.png' },
-                { name: 'ANIMASI', image: '/img/animasi.png' },
-                { name: 'BRF', image: '/img/brf.png' },
-                { name: 'TE', image: '/img/te.png' },
-                { name: 'DKV', image: '/img/dkv.png' },
+                { name: 'PPLG', image: '/img/PPLG.png' },
+                { name: 'TJKT', image: '/img/TJKT.png' },
+                { name: 'ANIMASI', image: '/img/ANIMASI.png' },
+                { name: 'BRF', image: '/img/BRF.png' },
+                { name: 'TE', image: '/img/TE.png' },
+                { name: 'DKV', image: '/img/DKV.png' },
               ].map((jurusan, index) => (
                 <motion.div
                   key={jurusan.name}
