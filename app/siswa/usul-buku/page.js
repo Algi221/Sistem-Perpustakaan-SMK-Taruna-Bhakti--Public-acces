@@ -1,11 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 export default function UsulBukuPage() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [formData, setFormData] = useState({
     title: '',
@@ -16,6 +18,24 @@ export default function UsulBukuPage() {
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login');
+    }
+  }, [status, router]);
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-gray-600 dark:text-gray-400">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return null;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,11 +69,6 @@ export default function UsulBukuPage() {
       setLoading(false);
     }
   };
-
-  if (!session) {
-    router.push('/login');
-    return null;
-  }
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 p-6 transition-colors duration-300">
