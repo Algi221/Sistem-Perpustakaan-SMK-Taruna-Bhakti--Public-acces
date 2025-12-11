@@ -42,8 +42,32 @@ export async function POST(request) {
     );
   } catch (error) {
     console.error('Registration error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      errno: error.errno,
+      sqlState: error.sqlState,
+      sqlMessage: error.sqlMessage
+    });
+    
+    // Check if it's a database connection error
+    if (error.code === 'ECONNREFUSED' || error.code === 'ETIMEDOUT' || error.code === 'ENOTFOUND') {
+      return NextResponse.json(
+        { error: 'Koneksi database gagal. Silakan hubungi administrator.' },
+        { status: 500 }
+      );
+    }
+    
+    // Check if it's a duplicate entry error
+    if (error.code === 'ER_DUP_ENTRY') {
+      return NextResponse.json(
+        { error: 'Email sudah terdaftar' },
+        { status: 400 }
+      );
+    }
+    
     return NextResponse.json(
-      { error: 'Terjadi kesalahan saat registrasi' },
+      { error: 'Terjadi kesalahan saat registrasi. Silakan coba lagi.' },
       { status: 500 }
     );
   }

@@ -64,13 +64,21 @@ export default function RegisterForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || 'Terjadi kesalahan');
+        setError(data.error || 'Terjadi kesalahan saat registrasi');
         return;
       }
 
+      // Redirect to login page
       router.push('/login?registered=true');
     } catch (err) {
-      setError('Terjadi kesalahan. Silakan coba lagi.');
+      console.error('Register error:', err);
+      if (err.message?.includes('Failed to fetch') || err.message?.includes('network')) {
+        setError('Koneksi ke server gagal. Periksa koneksi internet Anda.');
+      } else if (err.message?.includes('database') || err.message?.includes('connection')) {
+        setError('Koneksi database gagal. Silakan hubungi administrator.');
+      } else {
+        setError('Terjadi kesalahan. Silakan coba lagi.');
+      }
     } finally {
       setLoading(false);
     }

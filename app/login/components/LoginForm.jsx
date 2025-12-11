@@ -45,7 +45,14 @@ export default function LoginForm() {
       });
 
       if (result?.error) {
-        setError('Email atau password salah');
+        // Check for specific error messages
+        if (result.error.includes('CredentialsSignin') || result.error.includes('Credentials')) {
+          setError('Email atau password salah');
+        } else if (result.error.includes('database') || result.error.includes('connection')) {
+          setError('Koneksi database gagal. Silakan hubungi administrator.');
+        } else {
+          setError(result.error || 'Email atau password salah');
+        }
       } else if (result?.ok) {
         // Wait a bit for session to be set in cookies
         await new Promise(resolve => setTimeout(resolve, 100));
@@ -68,7 +75,12 @@ export default function LoginForm() {
         setError('Login gagal. Silakan coba lagi.');
       }
     } catch (err) {
-      setError('Terjadi kesalahan. Silakan coba lagi.');
+      console.error('Login error:', err);
+      if (err.message?.includes('database') || err.message?.includes('connection')) {
+        setError('Koneksi database gagal. Silakan hubungi administrator.');
+      } else {
+        setError('Terjadi kesalahan. Silakan coba lagi.');
+      }
     } finally {
       setLoading(false);
     }
